@@ -8,7 +8,7 @@ A lightweight JavaScript utility for **clean error handling** with optional **AI
 
 ```bash
 npm install safe-try-with-ai
-
+```
 
 ## Usage
 
@@ -24,6 +24,7 @@ if (err) {
 } else {
   console.log(result); // { x: 1 }
 }
+```
 
 ## Optional AI Runtime Suggestions
 
@@ -39,6 +40,7 @@ if (err) {
   console.log("Suggestion:", err.suggestion); // AI suggestion
   console.log("Fix:", err.fix);               // Suggested fix
 }
+```
 
 ## Features
 
@@ -47,3 +49,10 @@ if (err) {
 - Optional AI-style runtime error suggestions  
 - Zero dependencies  
 - Lightweight and fast
+
+
+## License
+
+MIT
+
+---
