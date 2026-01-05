@@ -1,6 +1,6 @@
 {
   "name": "safe-try-with-ai",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Clean error handling for JavaScript",
   "keywords": [
     "error-handling",
