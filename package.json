@@ -1,0 +1,16 @@
+{
+  "name": "safe-try",
+  "version": "1.0.0",
+  "description": "Clean error handling for JavaScript",
+  "keywords": [
+    "error-handling",
+    "utility"
+  ],
+  "license": "MIT",
+  "author": "madhuka2002",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
