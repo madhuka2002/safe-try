@@ -55,4 +55,16 @@ if (err) {
 
 MIT
 
+
+## Changelog
+
+### v1.2.0
+- Added `safeTryDefault` for fallback values
+- Added `safeTryJson` for safe JSON parsing
+- Improved AI-style runtime suggestions
+- No breaking changes
+
+### v1.1.1
+- Improved JSON error suggestions
+
 ---
