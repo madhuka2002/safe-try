@@ -1,3 +1,5 @@
+---
+
 # safe-try-with-ai
 
 A lightweight JavaScript utility for **clean error handling** with optional **AI-style runtime suggestions**, without repetitive try/catch blocks.
@@ -10,6 +12,8 @@ A lightweight JavaScript utility for **clean error handling** with optional **AI
 npm install safe-try-with-ai
 ```
 
+---
+
 ## Usage
 
 ### Synchronous example
@@ -20,51 +24,167 @@ const { safeTry } = require("safe-try-with-ai");
 const [err, result] = safeTry(() => JSON.parse('{"x":1}'));
 
 if (err) {
-  console.error(err); // Original error
+  console.error(err);
 } else {
   console.log(result); // { x: 1 }
 }
 ```
 
+---
+
+### Asynchronous example
+
+```js
+const { safeTryAsync } = require("safe-try-with-ai");
+
+const [err, data] = await safeTryAsync(async () => {
+  return await fetchData();
+});
+
+if (err) {
+  console.error(err);
+}
+```
+
+---
+
 ## Optional AI Runtime Suggestions
 
 Enable AI-style runtime suggestions by passing `{ analyze: true }` as the second argument.
 
-### Synchronous example
-
 ```js
-const [err, result] = safeTry(() => JSON.parse("invalid"), { analyze: true });
+const { safeTry } = require("safe-try-with-ai");
+
+const [err] = safeTry(() => JSON.parse("invalid"), { analyze: true });
 
 if (err) {
-  console.error("Error:", err.message);       // Original error
-  console.log("Suggestion:", err.suggestion); // AI suggestion
-  console.log("Fix:", err.fix);               // Suggested fix
+  console.error("Error:", err.message);
+  console.log("Suggestion:", err.suggestion);
+  console.log("Fix:", err.fix);
 }
 ```
 
+> AI-style suggestions are **rule-based and local**.
+> No real AI model, no network calls, no data collection.
+
+---
+
+## Default Fallback Value
+
+Use `safeTryDefault` to return a fallback value when an error occurs.
+
+```js
+const { safeTryDefault } = require("safe-try-with-ai");
+
+const result = safeTryDefault(
+  () => JSON.parse("invalid"),
+  {},
+  { analyze: true }
+);
+
+console.log(result); // {}
+```
+
+---
+
+## Safe JSON Parsing
+
+```js
+const { safeTryJson } = require("safe-try-with-ai");
+
+const [err, data] = safeTryJson('{"x":1}', { analyze: true });
+
+if (err) {
+  console.error(err);
+}
+```
+
+---
+
+## CLI Usage
+
+## CLI Usage
+
+Validate JSON files from the terminal:
+
+npx safe-try-with-ai example.json
+npx safe-try-with-ai example.json --analyze
+
+✔ = JSON valid (green)
+✖ = JSON invalid (red)
+Suggestions (blue)
+Fix (green)
+
+Exit codes:
+0 = valid JSON
+1 = invalid JSON or runtime error
+
+
+
+```bash
+npx safe-try-with-ai example.json
+```
+
+Example output:
+
+```
+Error: Unexpected token
+Suggestion: Check JSON formatting
+Fix: Ensure commas and brackets are correct
+```
+
+---
+
+## TypeScript Support
+
+Built-in TypeScript definitions included.
+
+```ts
+import { safeTry } from "safe-try-with-ai";
+
+const [err, result] = safeTry(() => JSON.parse(data));
+```
+
+No configuration required.
+
+---
+
 ## Features
 
-- Works with synchronous and asynchronous functions  
-- Eliminates repetitive try/catch blocks  
-- Optional AI-style runtime error suggestions  
-- Zero dependencies  
-- Lightweight and fast
+* Works with synchronous and asynchronous functions
+* Eliminates repetitive try/catch blocks
+* Optional AI-style runtime suggestions
+* Default fallback handling
+* Safe JSON parsing helper
+* CLI support via `npx`
+* Built-in TypeScript definitions
+* Zero dependencies
+* Lightweight and fast
 
+---
+
+## Changelog
+
+### v1.3.0
+
+* Added TypeScript definitions
+* Added CLI support
+* Documentation improvements
+
+### v1.2.0
+
+* Added `safeTryDefault`
+* Added `safeTryJson`
+* Improved AI-style suggestions
+
+### v1.1.1
+
+* Improved JSON error suggestions
+
+---
 
 ## License
 
 MIT
-
-
-## Changelog
-
-### v1.2.0
-- Added `safeTryDefault` for fallback values
-- Added `safeTryJson` for safe JSON parsing
-- Improved AI-style runtime suggestions
-- No breaking changes
-
-### v1.1.1
-- Improved JSON error suggestions
 
 ---
