@@ -1,3 +1,4 @@
+
 ---
 
 # safe-try-with-ai
@@ -10,7 +11,7 @@ A lightweight JavaScript utility for **clean error handling** with optional **AI
 
 ```bash
 npm install safe-try-with-ai
-```
+````
 
 ---
 
@@ -103,41 +104,37 @@ if (err) {
 
 ## CLI Usage
 
-## CLI Usage
-
 Validate JSON files from the terminal:
-
-npx safe-try-with-ai example.json
-npx safe-try-with-ai example.json --analyze
-
-✔ = JSON valid (green)
-✖ = JSON invalid (red)
-Suggestions (blue)
-Fix (green)
-
-Exit codes:
-0 = valid JSON
-1 = invalid JSON or runtime error
-
-
 
 ```bash
 npx safe-try-with-ai example.json
+npx safe-try-with-ai example.json --analyze
 ```
 
-Example output:
+### Pipe JSON via stdin
 
+```bash
+cat example.json | npx safe-try-with-ai --stdin
+cat bad.json | npx safe-try-with-ai --stdin --analyze
 ```
-Error: Unexpected token
-Suggestion: Check JSON formatting
-Fix: Ensure commas and brackets are correct
-```
+
+### CLI Output Legend
+
+* ✔ JSON valid (green)
+* ✖ JSON invalid (red)
+* Suggestions (blue)
+* Fix (green)
+
+### Exit Codes
+
+* `0` = valid JSON
+* `1` = invalid JSON or runtime error
 
 ---
 
 ## TypeScript Support
 
-Built-in TypeScript definitions included.
+Built-in TypeScript definitions included:
 
 ```ts
 import { safeTry } from "safe-try-with-ai";
@@ -156,7 +153,7 @@ No configuration required.
 * Optional AI-style runtime suggestions
 * Default fallback handling
 * Safe JSON parsing helper
-* CLI support via `npx`
+* CLI support via `npx` and `--stdin`
 * Built-in TypeScript definitions
 * Zero dependencies
 * Lightweight and fast
@@ -164,6 +161,24 @@ No configuration required.
 ---
 
 ## Changelog
+
+### v1.5.0
+
+* Added `--stdin` support for piping JSON to CLI
+* CLI improvements for clearer output with colors and symbols
+
+### v1.4.0
+
+* Enhanced CLI with colors and symbols for valid/invalid JSON
+* Improved AI-style suggestions formatting
+
+### v1.3.2
+
+* Bug fixes and small improvements
+
+### v1.3.1
+
+* Minor CLI fixes
 
 ### v1.3.0
 
@@ -187,4 +202,9 @@ No configuration required.
 
 MIT
 
+```
+
 ---
+
+
+

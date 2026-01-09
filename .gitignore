@@ -1,2 +1,4 @@
 node_modules
 .env
+good.json
+bad.json
