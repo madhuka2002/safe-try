@@ -118,6 +118,14 @@ cat example.json | npx safe-try-with-ai --stdin
 cat bad.json | npx safe-try-with-ai --stdin --analyze
 ```
 
+### STDIN support (v1.5.0+)
+
+Validate JSON from pipes:
+
+```bash
+cat file.json | safe-try-with-ai --stdin -a
+```
+
 ### CLI Output Legend
 
 * ✔ JSON valid (green)
@@ -162,6 +170,15 @@ No configuration required.
 
 ## Changelog
 
+### v1.5.1
+
+- Fixed CLI execution issues
+- Added short `-a` flag
+- Improved stdin handling
+- Reduced npm package size
+
+
+
 ### v1.5.0
 
 * Added `--stdin` support for piping JSON to CLI
@@ -202,7 +219,6 @@ No configuration required.
 
 MIT
 
-```
 
 ---
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+const path = require("path");
 const { safeTryJson } = require("../src/index.js");
 
 // ANSI color codes
@@ -12,22 +13,24 @@ const COLORS = {
     white: "\x1b[37m"
 };
 
-const green = (text) => COLORS.green + text + COLORS.reset;
-const red = (text) => COLORS.red + text + COLORS.reset;
-const blue = (text) => COLORS.blue + text + COLORS.reset;
-const white = (text) => COLORS.white + text + COLORS.reset;
+const green = (t) => COLORS.green + t + COLORS.reset;
+const red = (t) => COLORS.red + t + COLORS.reset;
+const blue = (t) => COLORS.blue + t + COLORS.reset;
+const white = (t) => COLORS.white + t + COLORS.reset;
 
-// CLI Args
+// CLI args
 const args = process.argv.slice(2);
-const analyze = args.includes("--analyze");
+const analyze = args.includes("--analyze") || args.includes("-a");
 
-// Check if stdin or file
+// ---------- STDIN MODE ----------
 if (args.includes("--stdin")) {
     let input = "";
+
     process.stdin.setEncoding("utf8");
     process.stdin.on("data", chunk => input += chunk);
     process.stdin.on("end", () => {
-        const [err] = safeTryJson(() => input, { analyze });
+        const [err] = safeTryJson(input, { analyze });
+
         if (err) {
             console.log(red("✖ Invalid JSON"));
             console.log(white(`  └─ Error: ${err.message}`));
@@ -36,29 +39,46 @@ if (args.includes("--stdin")) {
                 if (err.fix) console.log(green(`  └─ Fix: ${err.fix}`));
             }
             process.exit(1);
-        } else {
-            console.log(green("✔ JSON is valid"));
-            process.exit(0);
         }
-    });
-} else if (args[0]) {
-    const filePath = args[0];
-    const [err] = safeTryJson(() => fs.readFileSync(filePath, "utf8"), { analyze });
-    if (err) {
-        console.log(red("✖ Cannot read or invalid JSON"));
-        console.log(white(`  └─ Error: ${err.message}`));
-        if (analyze && err.suggestion) {
-            console.log(blue(`  ├─ Suggestion: ${err.suggestion}`));
-            if (err.fix) console.log(green(`  └─ Fix: ${err.fix}`));
-        }
-        process.exit(1);
-    } else {
+
         console.log(green("✔ JSON is valid"));
         process.exit(0);
-    }
-} else {
+    });
+
+    return;
+}
+
+// ---------- FILE MODE ----------
+if (!args[0]) {
     console.log(red("✖ No file specified"));
-    console.log("Usage: safe-try-with-ai <file.json> [--analyze]");
-    console.log("       cat <file.json> | safe-try-with-ai --stdin [--analyze]");
+    console.log("Usage:");
+    console.log("  safe-try-with-ai file.json [--analyze]");
+    console.log("  cat file.json | safe-try-with-ai --stdin [--analyze]");
     process.exit(1);
 }
+
+const filePath = path.resolve(args[0]);
+
+let fileContent;
+try {
+    fileContent = fs.readFileSync(filePath, "utf8");
+} catch (e) {
+    console.log(red("✖ Cannot read file"));
+    console.log(white(`  └─ Error: ${e.message}`));
+    process.exit(1);
+}
+
+const [err] = safeTryJson(fileContent, { analyze });
+
+if (err) {
+    console.log(red("✖ Invalid JSON"));
+    console.log(white(`  └─ Error: ${err.message}`));
+    if (analyze && err.suggestion) {
+        console.log(blue(`  ├─ Suggestion: ${err.suggestion}`));
+        if (err.fix) console.log(green(`  └─ Fix: ${err.fix}`));
+    }
+    process.exit(1);
+}
+
+console.log(green("✔ JSON is valid"));
+process.exit(0);

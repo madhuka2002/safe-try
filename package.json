@@ -11,6 +11,12 @@
     "bin": {
         "safe-try-with-ai": "./bin/safe-try.js"
     },
+    "files": [
+        "src",
+        "bin",
+        "index.d.ts",
+        "README.md"
+    ],
     "license": "MIT",
     "author": "madhuka2002",
     "type": "commonjs",
